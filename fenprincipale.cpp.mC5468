@@ -1,0 +1,86 @@
+#include "fenprincipale.h"
+#include <math.h>
+
+
+FenPrincipale::FenPrincipale()
+{
+
+    // ----- FENETRE DEBUT -----
+
+    //Titre de la fenêtre
+    this->setWindowTitle("Tourelle 3D");
+
+    //Création du layout vertical principal
+    QGridLayout *layoutPrincipal = new QGridLayout;
+
+
+    // ----- 1ERE GROUPBOX -----
+
+    // Création de la GroupBox
+    QGroupBox *groupbox1 = new QGroupBox("Modélisations 3D Temps Réel", this);
+
+    // Création du Widget OpenGL
+    tourelle3D = new GLTourelle(this, 400, 240); //Ajout d'une nouvelle tourelle 3D dans la fenêtre d'une taille de 400x240
+    tourelle2 = new GLSphere(this, 400, 240); //Ajout d'une nouvelle représentation sphérique dans la fenêtre d'une taille de 400x240
+
+    // Création du Layout OpenGL de la GroupBox1 et ajout des Widgets
+    QHBoxLayout *layout1 = new QHBoxLayout;
+    layout1->addWidget(tourelle3D);
+    layout1->addWidget(tourelle2);
+
+    // Ajout du Layout à la GroupBox1
+    groupbox1->setLayout(layout1);
+
+    // Ajout de la GroupBox1 au Layout Principal
+    layoutPrincipal->addWidget(groupbox1,1,1);
+
+    // ----- 2EME GROUPBOX -----
+
+    // Création de la GroupBox
+    QGroupBox *groupbox2 = new QGroupBox("Valeurs des angles", this);
+
+    // Création des Widgets
+
+    //QLine
+    QLineEdit *delta = new QLineEdit;
+    QLineEdit *omega = new QLineEdit;
+    QLineEdit *x_disp = new QLineEdit;
+    x_disp->setEnabled(0);
+    QLineEdit *y_disp = new QLineEdit;
+    y_disp->setEnabled(0);
+    QLineEdit *z_disp = new QLineEdit;
+    z_disp->setEnabled(0);
+
+    // Création des layouts de la GroupBox2 et ajout des Widgets
+    QGridLayout *layout2 = new QGridLayout;
+    QFormLayout *coordonnees = new QFormLayout;
+    coordonnees->addRow("delta", delta);
+    coordonnees->addRow("omega", omega);
+    coordonnees->addRow("x :",x_disp);
+    coordonnees->addRow("y :",y_disp);
+    coordonnees->addRow("z :",z_disp);
+
+    // Ajout du Layout à la GroupBox2
+    layout2->addLayout(coordonnees,1,1);
+    layout2->columnStretch(2);
+    groupbox2->setLayout(layout2);
+
+
+    // Ajout de la GroupBox2 au Layout Principal
+    layoutPrincipal->addWidget(groupbox2,2,1);
+
+
+    //Connections
+
+    //Calculs
+    //double x = 2*cos(delta)*cos(omega);
+
+
+
+
+
+    // ----- FENETRE FIN -----
+
+    //Ajout du LayoutPrincipal (vertical) à la fenêtre
+    this->setLayout(layoutPrincipal);
+}
