@@ -15,6 +15,7 @@ public:
     virtual void keyPressEvent( QKeyEvent *keyEvent );
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void qNormalizeAngle(int &angle);
+    virtual void mousePressEvent(QMouseEvent *event);
     int xRot;
     int yRot;
     int zRot;

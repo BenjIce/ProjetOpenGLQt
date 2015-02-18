@@ -23,7 +23,7 @@ myGLWidget::myGLWidget(int framesPerSecond, QWidget *parent)
     yRot = 0;
     zRot = 0;
 
-    setCursor(Qt::PointingHandCursor);
+    setCursor(Qt::OpenHandCursor);
 }
 
 void myGLWidget::keyPressEvent(QKeyEvent *keyEvent)
@@ -97,6 +97,18 @@ void myGLWidget::setZRotation(int angle)
     }
 }
 
+void myGLWidget::mousePressEvent(QMouseEvent *event)
+{
+    if (event->buttons()& Qt::LeftButton){
+        //setCursor(Qt::ClosedHandCursor);
+        QApplication::setOverrideCursor(Qt::ClosedHandCursor);
+
+    }
+    else if (event->buttons() & Qt::RightButton){
+        //setCursor(Qt::ClosedHandCursor);
+        QApplication::setOverrideCursor(Qt::ClosedHandCursor);
+    }
+}
 
 void myGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
@@ -110,7 +122,7 @@ void myGLWidget::mouseMoveEvent(QMouseEvent *event)
      }
      else if (event->buttons() & Qt::RightButton) {
          setXRotation(xRot + 8 * dy);       //Rotation sur l'axe X
-         //setZRotation(zRot + 8 * dx);
+         //setZRotation(zRot + 8 * dx)
      }
     lastPos = event->pos();
 }
