@@ -62,7 +62,6 @@ private:
     double yCons;
     double zCons;
 
-public slots:
 
 
 };
