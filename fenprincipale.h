@@ -16,6 +16,8 @@ public:
 public slots:
     void MAJdelta(int delta);
     void MAJomega(int omega);
+    void MAJdeltaCons(int deltaCons);
+    void MAJomegaCons(int omegaCons);
 
 signals:
      void deltaChanged(double newDelta);
@@ -23,6 +25,12 @@ signals:
      void xChanged(double newX);
      void yChanged(double newY);
      void zChanged(double newZ);
+
+     void deltaConsChanged(double newDeltaCons);
+     void omegaConsChanged(double newOmegaCons);
+     void xConsChanged(double newXCons);
+     void yConsChanged(double newYCons);
+     void zConsChanged(double newZCons);
 
 private:
     GLTourelle *tourelle3D;
@@ -40,6 +48,19 @@ private:
     double x;
     double y;
     double z;
+
+    QLCDNumber *lcd_omegaCons;
+    QSlider *slider_omegaCons;
+    QLCDNumber *lcd_deltaCons;
+    QSlider *slider_deltaCons;
+    QLCDNumber *xCons_disp;
+    QLCDNumber *yCons_disp;
+    QLCDNumber *z_Consdisp;
+    double omegaCons_value;
+    double deltaCons_value;
+    double xCons;
+    double yCons;
+    double zCons;
 
 public slots:
 

@@ -54,15 +54,32 @@ FenPrincipale::FenPrincipale()
     QLCDNumber *z_disp = new QLCDNumber;
     z_disp->setSegmentStyle(QLCDNumber::Flat);
 
+    QSlider *slider_deltaCons = new QSlider(Qt::Horizontal,this);
+    slider_deltaCons->setRange(-90,90);
+    QSlider *slider_omegaCons = new QSlider(Qt::Horizontal,this);
+    slider_omegaCons->setRange(-180,180);
+    QLCDNumber *xCons_disp = new QLCDNumber;
+    xCons_disp->setSegmentStyle(QLCDNumber::Flat);
+    QLCDNumber *yCons_disp = new QLCDNumber;
+    yCons_disp->setSegmentStyle(QLCDNumber::Flat);
+    QLCDNumber *zCons_disp = new QLCDNumber;
+    zCons_disp->setSegmentStyle(QLCDNumber::Flat);
+
     // Création des layouts de la GroupBox2 et ajout des Widgets
     QGridLayout *layout2 = new QGridLayout;
     layout2->setColumnStretch(1,2);
     QFormLayout *coordonnees = new QFormLayout;
-    coordonnees->addRow("delta", slider_delta);
-    coordonnees->addRow("omega", slider_omega);
-    coordonnees->addRow("x :",x_disp);
-    coordonnees->addRow("y :",y_disp);
-    coordonnees->addRow("z :",z_disp);
+    coordonnees->addRow("Mesure de delta", slider_delta);
+    coordonnees->addRow("Mesure de omega", slider_omega);
+    coordonnees->addRow("Mesure - x :",x_disp);
+    coordonnees->addRow("Mesure - y :",y_disp);
+    coordonnees->addRow("Mesure - z :",z_disp);
+
+    coordonnees->addRow("Consigne de delta", slider_deltaCons);
+    coordonnees->addRow("Consigne de omega", slider_omegaCons);
+    coordonnees->addRow("Consigne - x :",xCons_disp);
+    coordonnees->addRow("Consigne - y :",yCons_disp);
+    coordonnees->addRow("Consigne - z :",zCons_disp);
 
     // Ajout du Layout à la GroupBox2
     layout2->addLayout(coordonnees,1,1);
@@ -77,6 +94,12 @@ FenPrincipale::FenPrincipale()
     QObject::connect(this,SIGNAL(xChanged(double)),x_disp,SLOT(display(double)));
     QObject::connect(this,SIGNAL(yChanged(double)),y_disp,SLOT(display(double)));
     QObject::connect(this,SIGNAL(zChanged(double)),z_disp,SLOT(display(double)));
+
+    QObject::connect(slider_deltaCons,SIGNAL(valueChanged(int)),this,SLOT(MAJdeltaCons(int)));
+    QObject::connect(slider_omegaCons,SIGNAL(valueChanged(int)),this,SLOT(MAJomegaCons(int)));
+    QObject::connect(this,SIGNAL(xConsChanged(double)),xCons_disp,SLOT(display(double)));
+    QObject::connect(this,SIGNAL(yConsChanged(double)),yCons_disp,SLOT(display(double)));
+    QObject::connect(this,SIGNAL(zConsChanged(double)),zCons_disp,SLOT(display(double)));
 
     // ----- FENETRE FIN -----
 
@@ -120,5 +143,43 @@ void FenPrincipale::MAJomega(int omega){
     sphere->setOmega(omega_value);
     if (delta_value!=0.0){
     sphere->setDelta(delta_value);
+    }
+}
+
+void FenPrincipale::MAJdeltaCons(int deltaCons){
+
+            deltaCons_value = (double(deltaCons)/180)*M_PI;
+            emit deltaConsChanged(deltaCons_value);
+
+            xCons = 2*cos(deltaCons_value)*cos(omegaCons_value);
+            yCons = 2*cos(deltaCons_value)*sin(omegaCons_value);
+            zCons = 2*sin(deltaCons_value);
+            emit xConsChanged(xCons);
+            emit yConsChanged(yCons);
+            emit zConsChanged(zCons);
+            sphere->setXCons(xCons);
+            sphere->setYCons(yCons);
+            sphere->setZCons(zCons);
+            sphere->setDeltaCons(deltaCons_value);
+            //sphere->setOmega(omega_value);
+}
+
+void FenPrincipale::MAJomegaCons(int omegaCons){
+
+    omegaCons_value = (double(omegaCons)/180)*M_PI;
+    emit omegaConsChanged(omegaCons_value);
+
+    xCons = 2*cos(deltaCons_value)*cos(omegaCons_value);
+    yCons = 2*cos(deltaCons_value)*sin(omegaCons_value);
+    zCons = 2*sin(deltaCons_value);
+    emit xConsChanged(xCons);
+    emit yConsChanged(yCons);
+    emit zConsChanged(zCons);
+    sphere->setXCons(xCons);
+    sphere->setYCons(yCons);
+    sphere->setZCons(zCons);
+    sphere->setOmegaCons(omegaCons_value);
+    if (deltaCons_value!=0.0){
+    sphere->setDeltaCons(deltaCons_value);
     }
 }

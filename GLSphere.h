@@ -20,15 +20,25 @@ public:
     void setOmega(double omega);
     void setDelta(double delta);
 
+    void setXCons(double XCons);
+    void setYCons(double YCons);
+    void setZCons(double ZCons);
+    void setOmegaCons(double omegaCons);
+    void setDeltaCons(double deltaCons);
+
 private:
 
       GLfloat x_var;
-      GLfloat xo;
       GLfloat y_var;
-      GLfloat yo;
       GLfloat z_var;
       double om_var;
       double dl_var;
+
+      GLfloat xCons_var;
+      GLfloat yCons_var;
+      GLfloat zCons_var;
+      double omCons_var;
+      double dlCons_var;
 };
 
 #endif // GLSPHERE_H

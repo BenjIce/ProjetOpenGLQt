@@ -33,6 +33,26 @@ void GLSphere::setDelta(double delta){
 }
 
 
+void GLSphere::setXCons(double XCons){
+    xCons_var = (GLfloat)XCons;
+}
+
+void GLSphere::setYCons(double YCons){
+    yCons_var = (GLfloat)YCons;
+}
+
+void GLSphere::setZCons(double ZCons){
+    zCons_var = (GLfloat)ZCons;
+}
+
+void GLSphere::setOmegaCons(double omegaCons){
+    omCons_var = omegaCons;
+}
+
+void GLSphere::setDeltaCons(double deltaCons){
+    dlCons_var = deltaCons;
+}
+
 
 void GLSphere::initializeGL()
 {
@@ -88,7 +108,7 @@ void GLSphere::paintGL()
 
         glEnd();
 
-        //ANGLE DELTA : VECTEUR
+        //ANGLE DELTA CONSIGNE : VECTEUR
         glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
         glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
         glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
@@ -97,12 +117,41 @@ void GLSphere::paintGL()
         glRotatef(zRot/vitesse, 0.0, 0.0, 1.0);
         glLineWidth(1);
         glBegin(GL_LINES);
-            glColor3f(1.0f,1.0f,0.0f);                              //Couleur jaune : Angle
+            glColor3f(1.0f,0.0f,0.0f);                              //Couleur rouge
+            glVertex3f(0.0f,0.0f,0.0f);                              // Début Axe Angle
+            glVertex3f(yCons_var,zCons_var,xCons_var);                          // Fin Axe Angle
+        glEnd();
+
+        //ANGLE OMEGA CONSIGNE : VECTEUR
+        glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
+        glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
+        glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
+        glRotatef(xRot/vitesse, 1.0, 0.0, 0.0);
+        glRotatef(yRot/vitesse, 0.0, 1.0, 0.0);
+        glRotatef(zRot/vitesse, 0.0, 0.0, 1.0);
+        glRotatef(omCons_var*(360/(2*M_PI)),0.0f,r,0.0f);
+        glLineWidth(1);
+        glBegin(GL_LINES);
+            glColor3f(1.0f,0.0f,0.0f);                              //Couleur rouge
+            glVertex3f(0.0f,0.0f,0.0f);                             //début angle omega
+            glVertex3f(0.0f,0.0f,r);                           //fin angle omega
+        glEnd();
+
+        //ANGLE DELTA MESURE : VECTEUR
+        glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
+        glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
+        glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
+        glRotatef(xRot/vitesse, 1.0, 0.0, 0.0);
+        glRotatef(yRot/vitesse, 0.0, 1.0, 0.0);
+        glRotatef(zRot/vitesse, 0.0, 0.0, 1.0);
+        glLineWidth(1);
+        glBegin(GL_LINES);
+            glColor3f(0.0f,1.0f,0.0f);                              //Couleur verte
             glVertex3f(0.0f,0.0f,0.0f);                              // Début Axe Angle
             glVertex3f(y_var,z_var,x_var);                          // Fin Axe Angle
         glEnd();
 
-        //ANGLE OMEGA : VECTEUR
+        //ANGLE OMEGA MESURE : VECTEUR
         glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
         glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
         glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
@@ -112,10 +161,11 @@ void GLSphere::paintGL()
         glRotatef(om_var*(360/(2*M_PI)),0.0f,r,0.0f);
         glLineWidth(1);
         glBegin(GL_LINES);
-            glColor3f(1.0f,0.0f,1.0f);                              // Omega : rose
+            glColor3f(0.0f,1.0f,0.0f);                              //Couleur verte
             glVertex3f(0.0f,0.0f,0.0f);                             //début angle omega
             glVertex3f(0.0f,0.0f,r);                           //fin angle omega
         glEnd();
+
 
         //3 CERCLES :
         glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
@@ -163,7 +213,43 @@ void GLSphere::paintGL()
         }
         glEnd();
 
-        //OMEGA : ARC DE CERCLE
+        //OMEGA CONSIGNE : ARC DE CERCLE
+        glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
+        glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
+        glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
+        glRotatef(xRot/vitesse, 1.0, 0.0, 0.0);
+        glRotatef(yRot/vitesse, 0.0, 1.0, 0.0);
+        glRotatef(zRot/vitesse, 0.0, 0.0, 1.0);
+        glLineWidth(4.0);
+        glBegin(GL_LINE_STRIP);
+        for(int i=0; i<200; i++)
+        {
+            double angle = omCons_var*i/200;
+            glColor3f(1.0f,0.0f,0.0f);                              //Couleur rouge
+            glVertex3f(sin(angle)*r,0.0f,cos(angle)*r);
+        }
+        glEnd();
+
+        //DELTA CONSIGNE : ARC DE CERCLE
+        glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
+        glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
+        glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
+        glRotatef(xRot/vitesse, 1.0, 0.0, 0.0);
+        glRotatef(yRot/vitesse, 0.0, 1.0, 0.0);
+        glRotatef(zRot/vitesse, 0.0, 0.0, 1.0);
+        glRotatef(omCons_var*(360/(2*M_PI)),0.0f,r,0.0f);
+        glLineWidth(4.0);
+        glBegin(GL_LINE_STRIP);
+        for(int i=0; i<200; i++)
+        {
+            double angle = dlCons_var*i/200;
+            glColor3f(1.0f,0.0f,0.0f);                              //Couleur rouge
+            glVertex3f(0.0f,sin(angle)*r,cos(angle)*r);
+        }
+        glEnd();
+
+
+        //OMEGA MESURE : ARC DE CERCLE
         glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
         glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
         glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
@@ -175,25 +261,25 @@ void GLSphere::paintGL()
         for(int i=0; i<200; i++)
         {
             double angle = om_var*i/200;
-            glColor3f(1.0f,0.0f,0.0f);                      //ROUGE
+            glColor3f(0.0f,1.0f,0.0f);                              //Couleur verte
             glVertex3f(sin(angle)*r,0.0f,cos(angle)*r);
         }
         glEnd();
 
-        //DELTA : ARC DE CERCLE
+        //DELTA MESURE : ARC DE CERCLE
         glLoadIdentity();									// Réinitialisation des matrices du modèle actuel
         glTranslatef(0.0f,0.0f,-6.0f);						// Objet centré en avant plan
         glRotatef(rsphr,1.0f,1.0f,0.0f);					// Rotation de l'objet
         glRotatef(xRot/vitesse, 1.0, 0.0, 0.0);
         glRotatef(yRot/vitesse, 0.0, 1.0, 0.0);
         glRotatef(zRot/vitesse, 0.0, 0.0, 1.0);
-        glRotatef(om_var*(360/(2*M_PI)),0.0f,r,0.0f);              // Pourquoi 57.3 = 360/(2*pi)
+        glRotatef(om_var*(360/(2*M_PI)),0.0f,r,0.0f);
         glLineWidth(4.0);
         glBegin(GL_LINE_STRIP);
         for(int i=0; i<200; i++)
         {
             double angle = dl_var*i/200;
-            glColor3f(0.0f,1.0f,1.0f);
+            glColor3f(0.0f,1.0f,0.0f);                              //Couleur verte
             glVertex3f(0.0f,sin(angle)*r,cos(angle)*r);
         }
         glEnd();
